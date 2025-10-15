@@ -5,10 +5,7 @@ const messageDiv = document.querySelector('.message');
 const board = document.querySelector('.board');
 const cells = document.querySelectorAll('.cell');
 
-let player1 = '';
-let player2 = '';
-let currentPlayer = '';
-let currentSymbol = 'x';
+let player1 = '', player2 = '', currentPlayer = '', currentSymbol = 'x';
 let gameActive = false;
 
 submitBtn.addEventListener('click', () => {
@@ -22,15 +19,15 @@ submitBtn.addEventListener('click', () => {
 
   document.querySelector('.form').style.display = 'none';
 
-  // ✅ Instead of display toggle, use visibility toggle
+  // Make board visible
   board.style.visibility = 'visible';
-  board.style.border = '2px solid #000'; // ensures layout stable
 
   currentPlayer = player1;
+  currentSymbol = 'x';
   messageDiv.textContent = `${currentPlayer}, you're up`;
   gameActive = true;
 
-  // ✅ Force browser reflow so Cypress sees visible elements
+  // Force reflow for Cypress rendering
   board.offsetHeight;
 });
 
@@ -66,11 +63,17 @@ cells.forEach(cell => {
 
 function checkWin() {
   const combos = [
-    [1,2,3],[4,5,6],[7,8,9],
-    [1,4,7],[2,5,8],[3,6,9],
-    [1,5,9],[3,5,7]
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 5, 9],
+    [3, 5, 7],
   ];
-  return combos.some(([a,b,c]) =>
+
+  return combos.some(([a, b, c]) =>
     document.getElementById(a).textContent === currentSymbol &&
     document.getElementById(b).textContent === currentSymbol &&
     document.getElementById(c).textContent === currentSymbol

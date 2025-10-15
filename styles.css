@@ -1,62 +1,54 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #fff;
-}
-
-.container {
-  margin-top: 40px;
 }
 
 h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .form {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 input {
-  margin: 6px;
+  margin: 5px;
   padding: 6px;
   font-size: 16px;
 }
 
 button {
-  margin-top: 10px;
-  padding: 8px 16px;
-  font-size: 16px;
-  border: 1px solid #000;
-  background: #fff;
+  padding: 6px 12px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .message {
-  margin-top: 20px;
+  margin: 15px 0;
   font-size: 18px;
   min-height: 24px;
 }
 
-/* ✅ Ensures board always has visible height & grid layout */
+/* Ensures the board is visible and cells have height */
 .board {
   width: 300px;
   height: 300px;
   margin: 20px auto;
-  border: 2px solid #000;
+  border: 2px solid black;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  visibility: hidden; /* use visibility instead of display:none */
+  visibility: hidden; /* initially hidden but retains layout */
 }
 
-/* ✅ Each cell must have defined size */
+/* Each cell is clickable with fixed size */
 .cell {
-  border: 1px solid #000;
-  background-color: pink;
+  border: 1px solid black;
+  background: pink;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 40px;
+  align-items: center;
+  font-size: 36px;
   cursor: pointer;
+  min-height: 100px; /* force height for Cypress visibility */
 }
