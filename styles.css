@@ -2,12 +2,10 @@ body {
   font-family: 'Comic Sans MS', cursive;
   background-color: white;
   text-align: center;
-  margin: 0;
-  padding: 0;
 }
 
 .container {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 h1 {
@@ -20,19 +18,19 @@ h1 {
 }
 
 input {
-  margin: 5px;
-  padding: 5px;
+  margin: 6px;
+  padding: 6px;
   font-size: 16px;
 }
 
 button {
   margin-top: 10px;
-  padding: 8px 16px;
+  padding: 8px 20px;
   font-size: 16px;
   border: 1px solid black;
+  border-radius: 6px;
   background-color: white;
   cursor: pointer;
-  border-radius: 6px;
 }
 
 button:hover {
@@ -42,16 +40,18 @@ button:hover {
 .message {
   font-size: 20px;
   margin-top: 20px;
-  min-height: 24px;
+  min-height: 25px;
 }
 
+/* ✅ Critical fix: ensure visibility and consistent size */
 .board {
-  display: none;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
-  gap: 0;
-  margin: 20px auto;
   width: 300px;
+  height: 300px;
+  margin: 25px auto;
+  display: none;          /* hidden initially */
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 1px solid transparent;
 }
 
 .cell {

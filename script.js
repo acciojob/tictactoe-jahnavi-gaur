@@ -21,7 +21,7 @@ submitBtn.addEventListener('click', () => {
   }
 
   document.querySelector('.form').style.display = 'none';
-  board.style.display = 'grid';
+  board.style.display = 'grid';  // ✅ ensures board visible for Cypress
   currentPlayer = player1;
   messageDiv.textContent = `${currentPlayer}, you're up`;
   gameActive = true;
@@ -45,7 +45,6 @@ cells.forEach(cell => {
       return;
     }
 
-    // Switch player
     if (currentPlayer === player1) {
       currentPlayer = player2;
       currentSymbol = 'o';
@@ -60,13 +59,13 @@ cells.forEach(cell => {
 
 function checkWin() {
   const winPatterns = [
-    [1,2,3], [4,5,6], [7,8,9],
-    [1,4,7], [2,5,8], [3,6,9],
-    [1,5,9], [3,5,7]
+    [1,2,3],[4,5,6],[7,8,9],
+    [1,4,7],[2,5,8],[3,6,9],
+    [1,5,9],[3,5,7]
   ];
 
   return winPatterns.some(pattern => {
-    const [a, b, c] = pattern;
+    const [a,b,c] = pattern;
     return (
       document.getElementById(a).textContent === currentSymbol &&
       document.getElementById(b).textContent === currentSymbol &&
