@@ -1,54 +1,103 @@
+/* Simple reset-safe CSS */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 36px;
+  background: #fff;
+}
+
+.container {
+  width: 360px; /* narrow container so board dimensions are predictable */
   text-align: center;
 }
 
 h1 {
-  margin-top: 20px;
+  font-size: 34px;
+  margin-bottom: 18px;
 }
 
+/* Player setup form */
 .form {
-  margin: 20px 0;
+  margin-bottom: 12px;
 }
 
-input {
-  margin: 5px;
-  padding: 6px;
+.input-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.input-row label {
+  width: 80px;
+  text-align: left;
+}
+
+.input-row input {
+  width: calc(100% - 90px);
+  padding: 6px 8px;
   font-size: 16px;
 }
 
-button {
-  padding: 6px 12px;
+button#submit {
+  margin-top: 10px;
+  padding: 8px 14px;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 16px;
 }
 
+/* Message area (Cypress checks the exact text) */
 .message {
-  margin: 15px 0;
+  margin-top: 14px;
   font-size: 18px;
-  min-height: 24px;
+  min-height: 24px; /* reserve vertical space */
 }
 
-/* Ensures the board is visible and cells have height */
+/* BOARD: keep explicit height and grid layout */
 .board {
   width: 300px;
-  height: 300px;
-  margin: 20px auto;
-  border: 2px solid black;
-  display: grid;
+  height: 300px;              /* explicit height ensures rows get height */
+  margin: 18px auto;
+  display: grid;              /* grid present even if hidden-ish */
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  visibility: hidden; /* initially hidden but retains layout */
+  gap: 0;
+  border: 2px solid #333;
+  background: #fff;
+  visibility: hidden;         /* hidden initially so layout still exists */
+  /* don't use display:none so grid stays calculable */
 }
 
-/* Each cell is clickable with fixed size */
+/* IMPORTANT: definite cell sizing so Cypress can click */
 .cell {
-  border: 1px solid black;
-  background: pink;
+  border: 1px solid #111;
+  background: #ffc0cb;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 36px;
+  justify-content: center;
+  font-size: 42px;
+  line-height: 1;
   cursor: pointer;
-  min-height: 100px; /* force height for Cypress visibility */
+  height: 100px;             /* explicit height for reliability */
+  user-select: none;
+}
+
+/* mark classes (optional) */
+.cell.x-mark { color: #000; }
+.cell.o-mark { color: #000; }
+
+/* winner highlight */
+.cell.winner { background: #800080; color: #fff; }
+
+/* Accessibility focus */
+.cell:focus {
+  outline: 3px solid #6fa8dc;
 }
