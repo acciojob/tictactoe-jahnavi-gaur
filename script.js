@@ -54,12 +54,12 @@ function startGame() {
   currentSymbol = 'x';
   gameActive = true;
 
-  // FIX: Use a microtask to update the message, ensuring it runs after all
-  // synchronous DOM manipulations are complete, which is safer for Cypress.
+  // FIX: Use a microtask to update the message. This ensures the message update 
+  // happens reliably *after* the synchronous click handler and DOM changes, 
+  // which resolves the Cypress timing issue.
   Promise.resolve().then(() => {
     setMessage(`${player1}, you're up`);
   });
-
 
   // Force reflow so the browser has painted before Cypress continues
   // This helps the test runner see the computed sizes immediately.
