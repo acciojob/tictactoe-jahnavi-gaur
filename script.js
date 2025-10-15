@@ -1,87 +1,80 @@
-let player1Name = '';
-let player2Name = '';
-let currentPlayer = 'x';
-let gameActive = false;
-let board = Array(9).fill('');
-const WINNING_COMBINATIONS = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8],
-  [0, 3, 6], [1, 4, 7], [2, 5, 8],
-  [0, 4, 8], [2, 4, 6]
-];
-
-// DOM Elements
-const setupDiv = document.querySelector('#player-setup');
-const gameBoardDiv = document.querySelector('#game-board');
+const player1Input = document.getElementById('player1');
+const player2Input = document.getElementById('player2');
+const submitBtn = document.getElementById('submit');
 const messageDiv = document.querySelector('.message');
+const board = document.getElementById('board');
 const cells = document.querySelectorAll('.cell');
-const restartBtn = document.querySelector('#restart-btn');
 
-// ✅ Start Game — updates message immediately
-function startGame() {
-  player1Name = document.querySelector('#player1').value.trim() || 'Player1';
-  player2Name = document.querySelector('#player2').value.trim() || 'Player2';
+let player1 = '';
+let player2 = '';
+let currentPlayer = '';
+let currentSymbol = 'x';
+let gameActive = false;
 
-  // Make sure message is visible instantly for Cypress
-  setupDiv.style.display = 'block';
-  gameBoardDiv.style.display = 'block';
+submitBtn.addEventListener('click', () => {
+  player1 = player1Input.value.trim();
+  player2 = player2Input.value.trim();
 
-  board.fill('');
-  currentPlayer = 'x';
-  gameActive = true;
-  cells.forEach(cell => {
-    cell.textContent = '';
-    cell.className = 'cell';
-  });
-  restartBtn.style.display = 'none';
-
-  // ✅ Cypress waits for this text — must happen synchronously
-  messageDiv.textContent = `${player1Name}, you're up`;
-}
-
-// Update Message
-function updateMessage(text) {
-  messageDiv.textContent = text;
-}
-
-// Handle Clicks
-function handleCellClick(e) {
-  const cell = e.target;
-  const index = parseInt(cell.id) - 1;
-  if (board[index] !== '' || !gameActive) return;
-
-  board[index] = currentPlayer;
-  cell.textContent = currentPlayer;
-
-  if (checkForWin()) {
-    const winner = currentPlayer === 'x' ? player1Name : player2Name;
-    updateMessage(`${winner} congratulations you won!`);
-    gameActive = false;
-    restartBtn.style.display = 'block';
-  } else if (board.every(c => c !== '')) {
-    updateMessage("It's a Draw!");
-    gameActive = false;
-    restartBtn.style.display = 'block';
-  } else {
-    currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
-    const next = currentPlayer === 'x' ? player1Name : player2Name;
-    updateMessage(`${next}, you're up`);
+  if (player1 === '' || player2 === '') {
+    alert('Please enter both player names');
+    return;
   }
-}
 
-// Win Check
-function checkForWin() {
-  return WINNING_COMBINATIONS.some(([a, b, c]) => {
-    return board[a] && board[a] === board[b] && board[b] === board[c];
+  document.querySelector('.form').style.display = 'none';
+  board.style.display = 'grid';
+  currentPlayer = player1;
+  messageDiv.textContent = `${currentPlayer}, you're up`;
+  gameActive = true;
+});
+
+cells.forEach(cell => {
+  cell.addEventListener('click', () => {
+    if (!gameActive || cell.textContent !== '') return;
+
+    cell.textContent = currentSymbol;
+
+    if (checkWin()) {
+      messageDiv.textContent = `${currentPlayer} congratulations you won!`;
+      gameActive = false;
+      return;
+    }
+
+    if (isDraw()) {
+      messageDiv.textContent = `It's a draw!`;
+      gameActive = false;
+      return;
+    }
+
+    // Switch player
+    if (currentPlayer === player1) {
+      currentPlayer = player2;
+      currentSymbol = 'o';
+    } else {
+      currentPlayer = player1;
+      currentSymbol = 'x';
+    }
+
+    messageDiv.textContent = `${currentPlayer}, you're up`;
+  });
+});
+
+function checkWin() {
+  const winPatterns = [
+    [1,2,3], [4,5,6], [7,8,9],
+    [1,4,7], [2,5,8], [3,6,9],
+    [1,5,9], [3,5,7]
+  ];
+
+  return winPatterns.some(pattern => {
+    const [a, b, c] = pattern;
+    return (
+      document.getElementById(a).textContent === currentSymbol &&
+      document.getElementById(b).textContent === currentSymbol &&
+      document.getElementById(c).textContent === currentSymbol
+    );
   });
 }
 
-// Restart Game
-function restartGame() {
-  startGame();
-  updateMessage(`${player1Name}, you're up`);
+function isDraw() {
+  return [...cells].every(cell => cell.textContent !== '');
 }
-
-// Event Listeners
-document.getElementById('submit').addEventListener('click', startGame);
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-restartBtn.addEventListener('click', restartGame);
