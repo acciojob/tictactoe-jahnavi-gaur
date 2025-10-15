@@ -1,4 +1,3 @@
-//your JS code here. If required.
 // --- Game State Variables ---
 let player1Name = 'Player 1';
 let player2Name = 'Player 2';
@@ -24,9 +23,9 @@ const restartBtn = document.querySelector('#restart-btn');
  * Initializes the game state and displays the board.
  */
 function startGame() {
-    // Get and sanitize player names
-    player1Name = document.querySelector('#player-1').value.trim() || 'Player 1';
-    player2Name = document.querySelector('#player-2').value.trim() || 'Player 2';
+    // Get and sanitize player names using the CORRECTED IDs: #player1 and #player2
+    player1Name = document.querySelector('#player1').value.trim() || 'Player 1';
+    player2Name = document.querySelector('#player2').value.trim() || 'Player 2';
     
     // Switch views
     setupDiv.style.display = 'none';
@@ -38,7 +37,7 @@ function startGame() {
     gameActive = true;
     cells.forEach(cell => {
         cell.textContent = '';
-        cell.className = 'cell'; // Reset classes
+        cell.className = 'cell'; // Reset classes (removes x-mark, o-mark, and winner)
     });
     restartBtn.style.display = 'none';
 
