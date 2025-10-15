@@ -1,7 +1,7 @@
 body {
-  font-family: 'Comic Sans MS', cursive;
-  background-color: white;
+  font-family: Arial, sans-serif;
   text-align: center;
+  background-color: #fff;
 }
 
 .container {
@@ -9,12 +9,12 @@ body {
 }
 
 h1 {
-  font-size: 40px;
-  font-weight: bold;
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
 .form {
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 input {
@@ -25,45 +25,38 @@ input {
 
 button {
   margin-top: 10px;
-  padding: 8px 20px;
+  padding: 8px 16px;
   font-size: 16px;
-  border: 1px solid black;
-  border-radius: 6px;
-  background-color: white;
+  border: 1px solid #000;
+  background: #fff;
   cursor: pointer;
-}
-
-button:hover {
-  background-color: lightgray;
 }
 
 .message {
-  font-size: 20px;
   margin-top: 20px;
-  min-height: 25px;
+  font-size: 18px;
+  min-height: 24px;
 }
 
-/* ✅ Critical fix: ensure visibility and consistent size */
+/* ✅ Ensures board always has visible height & grid layout */
 .board {
   width: 300px;
   height: 300px;
-  margin: 25px auto;
-  display: none;          /* hidden initially */
+  margin: 20px auto;
+  border: 2px solid #000;
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  border: 1px solid transparent;
+  visibility: hidden; /* use visibility instead of display:none */
 }
 
+/* ✅ Each cell must have defined size */
 .cell {
+  border: 1px solid #000;
   background-color: pink;
-  border: 1px solid black;
-  font-size: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 40px;
   cursor: pointer;
-}
-
-.cell.disabled {
-  pointer-events: none;
 }

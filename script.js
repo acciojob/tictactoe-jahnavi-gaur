@@ -2,7 +2,7 @@ const player1Input = document.getElementById('player1');
 const player2Input = document.getElementById('player2');
 const submitBtn = document.getElementById('submit');
 const messageDiv = document.querySelector('.message');
-const board = document.getElementById('board');
+const board = document.querySelector('.board');
 const cells = document.querySelectorAll('.cell');
 
 let player1 = '';
@@ -15,16 +15,23 @@ submitBtn.addEventListener('click', () => {
   player1 = player1Input.value.trim();
   player2 = player2Input.value.trim();
 
-  if (player1 === '' || player2 === '') {
+  if (!player1 || !player2) {
     alert('Please enter both player names');
     return;
   }
 
   document.querySelector('.form').style.display = 'none';
-  board.style.display = 'grid';  // ✅ ensures board visible for Cypress
+
+  // ✅ Instead of display toggle, use visibility toggle
+  board.style.visibility = 'visible';
+  board.style.border = '2px solid #000'; // ensures layout stable
+
   currentPlayer = player1;
   messageDiv.textContent = `${currentPlayer}, you're up`;
   gameActive = true;
+
+  // ✅ Force browser reflow so Cypress sees visible elements
+  board.offsetHeight;
 });
 
 cells.forEach(cell => {
@@ -40,7 +47,7 @@ cells.forEach(cell => {
     }
 
     if (isDraw()) {
-      messageDiv.textContent = `It's a draw!`;
+      messageDiv.textContent = "It's a draw!";
       gameActive = false;
       return;
     }
@@ -58,20 +65,16 @@ cells.forEach(cell => {
 });
 
 function checkWin() {
-  const winPatterns = [
+  const combos = [
     [1,2,3],[4,5,6],[7,8,9],
     [1,4,7],[2,5,8],[3,6,9],
     [1,5,9],[3,5,7]
   ];
-
-  return winPatterns.some(pattern => {
-    const [a,b,c] = pattern;
-    return (
-      document.getElementById(a).textContent === currentSymbol &&
-      document.getElementById(b).textContent === currentSymbol &&
-      document.getElementById(c).textContent === currentSymbol
-    );
-  });
+  return combos.some(([a,b,c]) =>
+    document.getElementById(a).textContent === currentSymbol &&
+    document.getElementById(b).textContent === currentSymbol &&
+    document.getElementById(c).textContent === currentSymbol
+  );
 }
 
 function isDraw() {
