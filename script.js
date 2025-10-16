@@ -8,16 +8,17 @@ let gameActive = false;
 
 // Winning combinations (indices of the board array: 0 to 8)
 const winPatterns = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows (Horizontal wins)
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns (Vertical wins)
     [0, 4, 8], [2, 4, 6]             // Diagonals
 ];
 
 // --- DOM Elements ---
 const setupScreen = document.getElementById('player-setup');
 const gameBoardScreen = document.getElementById('game-board-screen');
-const player1Input = document.getElementById('player-1');
-const player2Input = document.getElementById('player-2');
+// Corrected IDs for inputs: player1 and player2
+const player1Input = document.getElementById('player1'); 
+const player2Input = document.getElementById('player2');
 const submitButton = document.getElementById('submit');
 const messageElement = document.querySelector('.message');
 const cells = document.querySelectorAll('.cell');
@@ -25,18 +26,12 @@ const restartButton = document.getElementById('restart-game');
 
 // --- Functions ---
 
-/**
- * Updates the turn/game over message.
- */
 function updateMessage(msg) {
     messageElement.textContent = msg;
 }
 
-/**
- * Initializes and starts the game after player names are submitted.
- */
 function startGame() {
-    // 1. Get and sanitize player names (use defaults if empty)
+    // 1. Get and sanitize player names
     const p1Name = player1Input.value.trim() || 'Player 1';
     const p2Name = player2Input.value.trim() || 'Player 2';
 
@@ -54,14 +49,10 @@ function startGame() {
     updateMessage(`${currentPlayer.name}, you're up!`);
 }
 
-/**
- * Handles a click on any of the 9 cells.
- */
 function handleCellClick(event) {
     if (!gameActive) return;
 
     const cell = event.target;
-    // Cell IDs are 1-9, convert to 0-8 index for boardState array
     const cellIndex = parseInt(cell.id) - 1; 
 
     // Check if the cell is already taken
@@ -77,15 +68,15 @@ function handleCellClick(event) {
     // 2. Check for win
     if (checkWin()) {
         // Winning message: {username} congratulations you won!
-        updateMessage(`${currentPlayer.name}, congratulations you won! 🎉`);
+        updateMessage(`${currentPlayer.name} congratulations you won!`);
         gameActive = false;
         restartButton.classList.remove('hidden');
         return;
     }
 
-    // 3. Check for draw (only if no win)
+    // 3. Check for draw (if no win and board is full)
     if (checkDraw()) {
-        updateMessage("It's a draw! 🤝");
+        updateMessage("It's a draw!");
         gameActive = false;
         restartButton.classList.remove('hidden');
         return;
@@ -95,36 +86,24 @@ function handleCellClick(event) {
     switchTurn();
 }
 
-/**
- * Switches the current player and updates the message.
- */
 function switchTurn() {
+    // Switch to the other player
     currentPlayer = (currentPlayer === player1) ? player2 : player1;
+    // Update message to match the required format: "PlayerName, you're up"
     updateMessage(`${currentPlayer.name}, you're up`);
 }
 
-/**
- * Checks all win patterns against the current board state.
- */
 function checkWin() {
     const marker = currentPlayer.marker;
     return winPatterns.some(pattern => {
-        // Check if all three cells in the pattern match the current player's marker
         return pattern.every(index => boardState[index] === marker);
     });
 }
 
-/**
- * Checks if the board is full.
- */
 function checkDraw() {
-    // Check if every cell is filled (not null)
     return boardState.every(cell => cell !== null);
 }
 
-/**
- * Resets the game board and state for a new round.
- */
 function resetGame() {
     boardState = Array(9).fill(null);
     cells.forEach(cell => {
@@ -141,14 +120,10 @@ function resetGame() {
 
 
 // --- Event Listeners ---
-
-// 1. Start Game Button
 submitButton.addEventListener('click', startGame);
 
-// 2. Cell Clicks (to make a move)
 cells.forEach(cell => {
     cell.addEventListener('click', handleCellClick);
 });
 
-// 3. Restart Button (Optional but useful)
 restartButton.addEventListener('click', resetGame);
