@@ -96,9 +96,78 @@ button:hover {
 .tic-tac-toe-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* Make the grid container itself a perfect square */
+    /* Remove explicit height to let grid content define it */
     width: 300px;
-    height: 300px; 
+    grid-gap: 0;
+    margin: 0 auto 20px;
+    border: 2px solid #000;
+}
+
+.cell {
+    /* KEY FIX: Force square aspect ratio using padding hack */
+    position: relative;
+    padding-bottom: 100%; /* Makes height equal to width of the grid column */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffc0cb; 
+    font-family: 'Permanent Marker', cursive;
+    font-size: 4em;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.1s;
+
+    /* Use absolute positioning for content (X/O) over the padded space */
+    position: relative;
+    padding-bottom: 100%;
+    
+    /* Apply borders consistently */
+    border: 1px solid #000;
+    border-top: none; 
+    border-left: none;
+}
+
+/* Re-apply internal borders to make the grid visible */
+.cell:nth-child(n+4) { border-top: 1px solid #000; }
+.cell:nth-child(3n+2), 
+.cell:nth-child(3n+3) { border-left: 1px solid #000; }
+.cell:nth-child(3n+1) { border-left: none; }
+
+/* Wrapper for the X/O content to center it within the padded cell */
+.cell::before {
+    content: attr(data-marker);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1em; /* Use a relative font size here */
+}
+
+/* Since content is now ::before, need to update JS approach */
+/* To make the cell clickable, we'll keep the JS simple and just rely on the padding for height */
+.cell {
+    /* Override padding-bottom for the actual content */
+    padding-bottom: 0;
+    /* Re-center the actual text content */
+    height: 100%;
+    /* Use the font size directly on the cell now that padding provides the space */
+    font-size: 4em; 
+    
+    /* Reverting to the old cell definition since ::before makes the JS complex. 
+       Let's use the simplest, most direct height definition. */
+    height: 100px; /* Forces height explicitly */
+    width: 100px; /* Forces width explicitly */
+}
+
+/* Final attempt with explicit size for the cells and grid */
+.tic-tac-toe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px); /* Explicitly set column width */
+    grid-template-rows: repeat(3, 100px); /* Explicitly set row height */
+    width: 300px; /* Total width is 3x100px */
+    height: 300px; /* Total height is 3x100px */
     grid-gap: 0;
     margin: 0 auto 20px;
     border: 2px solid #000;
@@ -108,31 +177,29 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffc0cb; /* Pink */
+    background-color: #ffc0cb;
     font-family: 'Permanent Marker', cursive;
     font-size: 4em;
     font-weight: bold;
     cursor: pointer;
-    /* Use grid-area borders for internal lines */
-    border: 1px solid #000;
     user-select: none;
     transition: background-color 0.1s;
     
-    /* Ensure height is derived from the grid container */
-    height: 100%;
-    width: 100%;
-    
-    /* The main change: Use a negative margin to cover the border separation of 1px, 
-       and ensure the border logic is simple and reliable. */
+    /* Borders for internal lines */
+    border: 1px solid #000;
     border-top: none; 
     border-left: none;
+    
+    /* Ensure the cell fills its 100x100 grid area */
+    width: 100%;
+    height: 100%;
 }
 
-/* Re-apply internal borders to make the grid visible */
-.cell:nth-child(n+4) { border-top: 1px solid #000; } /* All cells starting from row 2 */
+/* Re-apply internal borders */
+.cell:nth-child(n+4) { border-top: 1px solid #000; }
 .cell:nth-child(3n+2), 
-.cell:nth-child(3n+3) { border-left: 1px solid #000; } /* Cells in column 2 and 3 */
-.cell:nth-child(3n+1) { border-left: none; } /* Clear left border for first column */
+.cell:nth-child(3n+3) { border-left: 1px solid #000; }
+.cell:nth-child(3n+1) { border-left: none; }
 
 .cell:not(:empty) {
     cursor: default;
