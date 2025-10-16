@@ -96,14 +96,12 @@ button:hover {
 .tic-tac-toe-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* Set a fixed size for the grid to make the cells predictable */
+    /* Make the grid container itself a perfect square */
     width: 300px;
-    /* Use explicit row sizing for height visibility */
-    grid-template-rows: repeat(3, 100px); 
+    height: 300px; 
     grid-gap: 0;
     margin: 0 auto 20px;
     border: 2px solid #000;
-    /* Removed fixed height: 300px to allow grid-template-rows to define height */
 }
 
 .cell {
@@ -115,18 +113,26 @@ button:hover {
     font-size: 4em;
     font-weight: bold;
     cursor: pointer;
+    /* Use grid-area borders for internal lines */
     border: 1px solid #000;
-    border-top: none; 
-    border-left: none;
     user-select: none;
     transition: background-color 0.1s;
-    /* Ensure cells take up the full 100px height defined by grid-template-rows */
-    height: 100%; 
+    
+    /* Ensure height is derived from the grid container */
+    height: 100%;
+    width: 100%;
+    
+    /* The main change: Use a negative margin to cover the border separation of 1px, 
+       and ensure the border logic is simple and reliable. */
+    border-top: none; 
+    border-left: none;
 }
 
-/* Re-add borders for the grid lines */
-.cell:nth-child(n+4) { border-top: 1px solid #000; }
-.cell:nth-child(3n+2) { border-left: 1px solid #000; }
+/* Re-apply internal borders to make the grid visible */
+.cell:nth-child(n+4) { border-top: 1px solid #000; } /* All cells starting from row 2 */
+.cell:nth-child(3n+2), 
+.cell:nth-child(3n+3) { border-left: 1px solid #000; } /* Cells in column 2 and 3 */
+.cell:nth-child(3n+1) { border-left: none; } /* Clear left border for first column */
 
 .cell:not(:empty) {
     cursor: default;
