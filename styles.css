@@ -44,7 +44,6 @@ h1 {
 
 /* --- Player Setup Styling --- */
 #player-setup h1 {
-    /* Style to match the reference image */
     margin-bottom: 40px; 
 }
 
@@ -63,7 +62,7 @@ h1 {
 input[type="text"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #000; /* Black border to match image */
+    border: 1px solid #000;
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 1em;
@@ -91,36 +90,41 @@ button:hover {
     font-size: 1.2em;
     margin-bottom: 15px;
     color: #333;
-    min-height: 1.5em; /* Reserve space for the message */
+    min-height: 1.5em; 
 }
 
 .tic-tac-toe-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    /* Set a fixed size for the grid to make the cells predictable */
+    width: 300px;
+    /* Use explicit row sizing for height visibility */
+    grid-template-rows: repeat(3, 100px); 
     grid-gap: 0;
-    width: 300px; /* Fixed size for the board */
-    height: 300px;
     margin: 0 auto 20px;
-    border: 2px solid #000; /* Outer border */
+    border: 2px solid #000;
+    /* Removed fixed height: 300px to allow grid-template-rows to define height */
 }
 
 .cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffc0cb; /* Pink color to match the reference image */
+    background-color: #ffc0cb; /* Pink */
+    font-family: 'Permanent Marker', cursive;
     font-size: 4em;
     font-weight: bold;
     cursor: pointer;
     border: 1px solid #000;
-    /* Remove borders for the outermost grid to avoid double lines */
     border-top: none; 
     border-left: none;
     user-select: none;
     transition: background-color 0.1s;
+    /* Ensure cells take up the full 100px height defined by grid-template-rows */
+    height: 100%; 
 }
 
-/* Re-add top and left borders for cells that need them */
+/* Re-add borders for the grid lines */
 .cell:nth-child(n+4) { border-top: 1px solid #000; }
 .cell:nth-child(3n+2) { border-left: 1px solid #000; }
 
@@ -129,14 +133,13 @@ button:hover {
 }
 
 .cell:hover:empty {
-    background-color: #ffb6c1; /* Slightly darker pink on hover */
+    background-color: #ffb6c1;
 }
 
-/* Player-specific marker colors */
 .cell.x {
-    color: #000; /* Black for X to match the image */
+    color: #000;
 }
 
 .cell.o {
-    color: #000; /* Black for O to match the image */
+    color: #000;
 }
