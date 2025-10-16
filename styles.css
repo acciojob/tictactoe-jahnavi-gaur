@@ -1,90 +1,142 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* Custom font similar to handwriting for flair */
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 40px;
-  background: #fff;
+    font-family: sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
 .container {
-  width: 360px;
-  text-align: center;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
 }
 
 h1 {
-  font-size: 34px;
-  margin-bottom: 18px;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #333;
+    text-transform: uppercase;
 }
 
-.form {
-  margin-bottom: 12px;
+/* --- Screen Management --- */
+.screen {
+    display: none;
 }
 
-.input-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 8px 0;
+.screen.active {
+    display: block;
 }
 
-.input-row label {
-  width: 80px;
-  text-align: left;
+.hidden {
+    display: none !important;
 }
 
-.input-row input {
-  width: calc(100% - 90px);
-  padding: 6px 8px;
-  font-size: 16px;
+/* --- Player Setup Styling --- */
+#player-setup h1 {
+    /* Style to match the reference image */
+    margin-bottom: 40px; 
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #000; /* Black border to match image */
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
 }
 
 button {
-  margin-top: 10px;
-  padding: 8px 14px;
-  font-size: 16px;
-  cursor: pointer;
+    padding: 15px 30px;
+    font-size: 1.1em;
+    background-color: transparent;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+    font-weight: bold;
 }
 
+button:hover {
+    background-color: #eee;
+}
+
+/* --- Game Board Styling --- */
 .message {
-  margin-top: 14px;
-  font-size: 18px;
-  min-height: 24px;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #333;
+    min-height: 1.5em; /* Reserve space for the message */
 }
 
-.board {
-  width: 300px;
-  min-height: 300px;
-  margin: 18px auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  border: 2px solid #333;
-  visibility: hidden;
+.tic-tac-toe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0;
+    width: 300px; /* Fixed size for the board */
+    height: 300px;
+    margin: 0 auto 20px;
+    border: 2px solid #000; /* Outer border */
 }
 
 .cell {
-  border: 1px solid #111;
-  background: #ffc0cb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 42px;
-  cursor: pointer;
-  height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffc0cb; /* Pink color to match the reference image */
+    font-size: 4em;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #000;
+    /* Remove borders for the outermost grid to avoid double lines */
+    border-top: none; 
+    border-left: none;
+    user-select: none;
+    transition: background-color 0.1s;
 }
 
-.cell.winner { background: #800080; color: #fff; }
+/* Re-add top and left borders for cells that need them */
+.cell:nth-child(n+4) { border-top: 1px solid #000; }
+.cell:nth-child(3n+2) { border-left: 1px solid #000; }
 
-#play-again {
-  background: #6fa8dc;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  padding: 8px 14px;
-  cursor: pointer;
-  margin-top: 12px;
+.cell:not(:empty) {
+    cursor: default;
+}
+
+.cell:hover:empty {
+    background-color: #ffb6c1; /* Slightly darker pink on hover */
+}
+
+/* Player-specific marker colors */
+.cell.x {
+    color: #000; /* Black for X to match the image */
+}
+
+.cell.o {
+    color: #000; /* Black for O to match the image */
 }
