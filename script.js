@@ -7,7 +7,7 @@ const submitBtn = document.getElementById("submit");
 let player1 = "";
 let player2 = "";
 let currentPlayer = "";
-let currentSymbol = "X";
+let currentSymbol = "x"; // lowercase to match Cypress expectation
 let board = ["", "", "", "", "", "", "", "", ""];
 
 const winningCombinations = [
@@ -22,8 +22,8 @@ const winningCombinations = [
 ];
 
 submitBtn.addEventListener("click", () => {
-  const p1 = document.getElementById("player-1").value.trim();
-  const p2 = document.getElementById("player-2").value.trim();
+  const p1 = document.getElementById("player1").value.trim();
+  const p2 = document.getElementById("player2").value.trim();
 
   if (p1 === "" || p2 === "") {
     alert("Please enter names for both players!");
@@ -47,12 +47,12 @@ cells.forEach((cell, index) => {
     board[index] = currentSymbol;
 
     if (checkWinner()) {
-      message.textContent = `${currentPlayer}, congratulations you won!`;
+      message.textContent = `${currentPlayer} congratulations you won!`;
       highlightWinningCells();
       return;
     }
 
-    currentSymbol = currentSymbol === "X" ? "O" : "X";
+    currentSymbol = currentSymbol === "x" ? "o" : "x";
     currentPlayer = currentPlayer === player1 ? player2 : player1;
     message.textContent = `${currentPlayer}, you're up`;
   });
