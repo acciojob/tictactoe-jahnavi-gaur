@@ -1,218 +1,67 @@
-/* Custom font similar to handwriting for flair */
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
-
 body {
-    font-family: sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
+  font-family: 'Comic Sans MS', cursive;
+  text-align: center;
+  margin-top: 40px;
 }
 
 .container {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 90%;
-    max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-h1 {
-    font-family: 'Permanent Marker', cursive;
-    font-size: 3em;
-    margin-bottom: 20px;
-    color: #333;
-    text-transform: uppercase;
+.player-input {
+  border: 2px solid #000;
+  padding: 20px 40px;
+  border-radius: 10px;
 }
 
-/* --- Screen Management --- */
-.screen {
-    display: none;
-}
-
-.screen.active {
-    display: block;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* --- Player Setup Styling --- */
-#player-setup h1 {
-    margin-bottom: 40px; 
-}
-
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 1em;
+input {
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #000;
+  text-align: center;
 }
 
 button {
-    padding: 15px 30px;
-    font-size: 1.1em;
-    background-color: transparent;
-    color: #000;
-    border: 2px solid #000;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 15px;
-    font-weight: bold;
+  margin-top: 15px;
+  padding: 8px 20px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  background-color: white;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #eee;
+  background-color: #f3f3f3;
 }
 
-/* --- Game Board Styling --- */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 2px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.cell {
+  background-color: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 60px;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+.winner {
+  background-color: purple !important;
+}
+
 .message {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    color: #333;
-    min-height: 1.5em; 
-}
-
-.tic-tac-toe-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* Remove explicit height to let grid content define it */
-    width: 300px;
-    grid-gap: 0;
-    margin: 0 auto 20px;
-    border: 2px solid #000;
-}
-
-.cell {
-    /* KEY FIX: Force square aspect ratio using padding hack */
-    position: relative;
-    padding-bottom: 100%; /* Makes height equal to width of the grid column */
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffc0cb; 
-    font-family: 'Permanent Marker', cursive;
-    font-size: 4em;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.1s;
-
-    /* Use absolute positioning for content (X/O) over the padded space */
-    position: relative;
-    padding-bottom: 100%;
-    
-    /* Apply borders consistently */
-    border: 1px solid #000;
-    border-top: none; 
-    border-left: none;
-}
-
-/* Re-apply internal borders to make the grid visible */
-.cell:nth-child(n+4) { border-top: 1px solid #000; }
-.cell:nth-child(3n+2), 
-.cell:nth-child(3n+3) { border-left: 1px solid #000; }
-.cell:nth-child(3n+1) { border-left: none; }
-
-/* Wrapper for the X/O content to center it within the padded cell */
-.cell::before {
-    content: attr(data-marker);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1em; /* Use a relative font size here */
-}
-
-/* Since content is now ::before, need to update JS approach */
-/* To make the cell clickable, we'll keep the JS simple and just rely on the padding for height */
-.cell {
-    /* Override padding-bottom for the actual content */
-    padding-bottom: 0;
-    /* Re-center the actual text content */
-    height: 100%;
-    /* Use the font size directly on the cell now that padding provides the space */
-    font-size: 4em; 
-    
-    /* Reverting to the old cell definition since ::before makes the JS complex. 
-       Let's use the simplest, most direct height definition. */
-    height: 100px; /* Forces height explicitly */
-    width: 100px; /* Forces width explicitly */
-}
-
-/* Final attempt with explicit size for the cells and grid */
-.tic-tac-toe-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 100px); /* Explicitly set column width */
-    grid-template-rows: repeat(3, 100px); /* Explicitly set row height */
-    width: 300px; /* Total width is 3x100px */
-    height: 300px; /* Total height is 3x100px */
-    grid-gap: 0;
-    margin: 0 auto 20px;
-    border: 2px solid #000;
-}
-
-.cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffc0cb;
-    font-family: 'Permanent Marker', cursive;
-    font-size: 4em;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.1s;
-    
-    /* Borders for internal lines */
-    border: 1px solid #000;
-    border-top: none; 
-    border-left: none;
-    
-    /* Ensure the cell fills its 100x100 grid area */
-    width: 100%;
-    height: 100%;
-}
-
-/* Re-apply internal borders */
-.cell:nth-child(n+4) { border-top: 1px solid #000; }
-.cell:nth-child(3n+2), 
-.cell:nth-child(3n+3) { border-left: 1px solid #000; }
-.cell:nth-child(3n+1) { border-left: none; }
-
-.cell:not(:empty) {
-    cursor: default;
-}
-
-.cell:hover:empty {
-    background-color: #ffb6c1;
-}
-
-.cell.x {
-    color: #000;
-}
-
-.cell.o {
-    color: #000;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
