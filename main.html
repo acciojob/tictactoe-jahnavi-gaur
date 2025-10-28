@@ -1,12 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Multiplayer Tic Tac Toe</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /*  your css code here. If applicable */
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      #player-form input {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+      }
+
+      #submit {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      h1 {
+        margin-bottom: 10px;
+      }
+
+      .message {
+        margin: 20px 0;
+        font-size: 20px;
+        color: #333;
+      }
+
+      .board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-gap: 5px;
+        justify-content: center;
+      }
+
+      .cell {
+        width: 100px;
+        height: 100px;
+        background: #eee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 36px;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 5px;
+      }
+
+      .cell:hover {
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
     <div class="container">
       <!-- Player Name Form -->
       <div id="player-form">
@@ -45,5 +108,75 @@
     </div>
 
     <script src="script.js"></script>
-</body>
-</html>
+    <script>
+      const submitBtn = document.getElementById("submit");
+      const player1Input = document.getElementById("player1");
+      const player2Input = document.getElementById("player2");
+      const playerForm = document.getElementById("player-form");
+      const gameArea = document.getElementById("game-area");
+      const messageDiv = document.querySelector(".message");
+      const cells = document.querySelectorAll(".cell");
+
+      let player1 = "";
+      let player2 = "";
+      let currentPlayer = "";
+      let board = Array(9).fill("");
+      let gameOver = false;
+
+      const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+
+      submitBtn.addEventListener("click", () => {
+        player1 = player1Input.value.trim();
+        player2 = player2Input.value.trim();
+
+        if (!player1 || !player2) {
+          alert("Please enter names for both players!");
+          return;
+        }
+
+        currentPlayer = player1;
+        playerForm.style.display = "none";
+        gameArea.style.display = "block";
+        messageDiv.textContent = ${currentPlayer}, you're up;
+      });
+
+      cells.forEach((cell, index) => {
+        cell.addEventListener("click", () => {
+          if (gameOver || board[index] !== "") return;
+
+          // Set move
+          board[index] = currentPlayer === player1 ? "x" : "o";
+          cell.textContent = board[index];
+
+          if (checkWin()) {
+            messageDiv.textContent = ${currentPlayer} congratulations you won!;
+            gameOver = true;
+            return;
+          }
+
+          if (!board.includes("")) {
+            messageDiv.textContent = "It's a draw!";
+            gameOver = true;
+            return;
+          }
+
+          currentPlayer = currentPlayer === player1 ? player2 : player1;
+          messageDiv.textContent = ${currentPlayer}, you're up;
+        });
+      });
+
+      function checkWin() {
+        return winningCombinations.some((combo) => {
+          const [a, b, c] = combo;
+          return board[a] && board[a] === board[b] && board[b] === board[c];
+        });
+      }
