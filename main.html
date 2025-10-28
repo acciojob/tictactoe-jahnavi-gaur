@@ -5,7 +5,6 @@
     <title>Multiplayer Tic Tac Toe</title>
     <link rel="stylesheet" href="styles.css" />
     <style>
-      /*  your css code here. If applicable */
       body {
         font-family: Arial, sans-serif;
         text-align: center;
@@ -93,7 +92,6 @@
         <h1>Tic Tac Toe</h1>
         <div class="message"></div>
         <div class="board">
-          <!-- 9 cells -->
           <div class="cell" id="1"></div>
           <div class="cell" id="2"></div>
           <div class="cell" id="3"></div>
@@ -107,7 +105,6 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
     <script>
       const submitBtn = document.getElementById("submit");
       const player1Input = document.getElementById("player1");
@@ -146,19 +143,18 @@
         currentPlayer = player1;
         playerForm.style.display = "none";
         gameArea.style.display = "block";
-        messageDiv.textContent = ${currentPlayer}, you're up;
+        messageDiv.textContent = `${currentPlayer}, you're up`;
       });
 
       cells.forEach((cell, index) => {
         cell.addEventListener("click", () => {
           if (gameOver || board[index] !== "") return;
 
-          // Set move
           board[index] = currentPlayer === player1 ? "x" : "o";
           cell.textContent = board[index];
 
           if (checkWin()) {
-            messageDiv.textContent = ${currentPlayer} congratulations you won!;
+            messageDiv.textContent = `${currentPlayer} congratulations you won!`;
             gameOver = true;
             return;
           }
@@ -170,7 +166,7 @@
           }
 
           currentPlayer = currentPlayer === player1 ? player2 : player1;
-          messageDiv.textContent = ${currentPlayer}, you're up;
+          messageDiv.textContent = `${currentPlayer}, you're up`;
         });
       });
 
@@ -180,3 +176,7 @@
           return board[a] && board[a] === board[b] && board[b] === board[c];
         });
       }
+	</script>
+	  <script scr="script.js"></script>
+  </body>
+</html>
