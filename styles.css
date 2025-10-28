@@ -1,67 +1,61 @@
 body {
-  font-family: 'Comic Sans MS', cursive;
-  text-align: center;
-  margin-top: 40px;
-}
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        background-color: #f2f2f2;
+      }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
+      .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-.player-input {
-  border: 2px solid #000;
-  padding: 20px 40px;
-  border-radius: 10px;
-}
+      #player-form input {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+      }
 
-input {
-  margin: 5px;
-  padding: 5px;
-  border: 1px solid #000;
-  text-align: center;
-}
+      #submit {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
 
-button {
-  margin-top: 15px;
-  padding: 8px 20px;
-  border-radius: 5px;
-  border: 1px solid #000;
-  background-color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
+      h1 {
+        margin-bottom: 10px;
+      }
 
-button:hover {
-  background-color: #f3f3f3;
-}
+      .message {
+        margin: 20px 0;
+        font-size: 20px;
+        color: #333;
+      }
 
-.board {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
-  gap: 2px;
-  justify-content: center;
-  margin: 20px auto;
-}
+      .board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-gap: 5px;
+        justify-content: center;
+      }
 
-.cell {
-  background-color: pink;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 60px;
-  cursor: pointer;
-  border: 1px solid black;
-}
+      .cell {
+        width: 100px;
+        height: 100px;
+        background: #eee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 36px;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 5px;
+      }
 
-.winner {
-  background-color: purple !important;
-}
-
-.message {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
+      .cell:hover {
+        background-color: #ddd;
+      }

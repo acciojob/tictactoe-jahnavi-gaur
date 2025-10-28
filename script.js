@@ -1,77 +1,71 @@
-const playerInput = document.querySelector(".player-input");
-const gameBoard = document.querySelector(".game-board");
-const message = document.querySelector(".message");
-const cells = document.querySelectorAll(".cell");
 const submitBtn = document.getElementById("submit");
+      const player1Input = document.getElementById("player1");
+      const player2Input = document.getElementById("player2");
+      const playerForm = document.getElementById("player-form");
+      const gameArea = document.getElementById("game-area");
+      const messageDiv = document.querySelector(".message");
+      const cells = document.querySelectorAll(".cell");
 
-let player1 = "";
-let player2 = "";
-let currentPlayer = "";
-let currentSymbol = "x"; // lowercase to match Cypress expectation
-let board = ["", "", "", "", "", "", "", "", ""];
+      let player1 = "";
+      let player2 = "";
+      let currentPlayer = "";
+      let board = Array(9).fill("");
+      let gameOver = false;
 
-const winningCombinations = [
-  [0,1,2],
-  [3,4,5],
-  [6,7,8],
-  [0,3,6],
-  [1,4,7],
-  [2,5,8],
-  [0,4,8],
-  [2,4,6]
-];
+      const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
 
-submitBtn.addEventListener("click", () => {
-  const p1 = document.getElementById("player1").value.trim();
-  const p2 = document.getElementById("player2").value.trim();
+      submitBtn.addEventListener("click", () => {
+        player1 = player1Input.value.trim();
+        player2 = player2Input.value.trim();
 
-  if (p1 === "" || p2 === "") {
-    alert("Please enter names for both players!");
-    return;
-  }
+        if (!player1 || !player2) {
+          alert("Please enter names for both players!");
+          return;
+        }
 
-  player1 = p1;
-  player2 = p2;
-  currentPlayer = player1;
+        currentPlayer = player1;
+        playerForm.style.display = "none";
+        gameArea.style.display = "block";
+        messageDiv.textContent = ${currentPlayer}, you're up;
+      });
 
-  playerInput.style.display = "none";
-  gameBoard.style.display = "block";
-  message.textContent = `${currentPlayer}, you're up`;
-});
+      cells.forEach((cell, index) => {
+        cell.addEventListener("click", () => {
+          if (gameOver || board[index] !== "") return;
 
-cells.forEach((cell, index) => {
-  cell.addEventListener("click", () => {
-    if (cell.textContent !== "" || checkWinner()) return;
+          // Set move
+          board[index] = currentPlayer === player1 ? "x" : "o";
+          cell.textContent = board[index];
 
-    cell.textContent = currentSymbol;
-    board[index] = currentSymbol;
+          if (checkWin()) {
+            messageDiv.textContent = ${currentPlayer} congratulations you won!;
+            gameOver = true;
+            return;
+          }
 
-    if (checkWinner()) {
-      message.textContent = `${currentPlayer} congratulations you won!`;
-      highlightWinningCells();
-      return;
-    }
+          if (!board.includes("")) {
+            messageDiv.textContent = "It's a draw!";
+            gameOver = true;
+            return;
+          }
 
-    currentSymbol = currentSymbol === "x" ? "o" : "x";
-    currentPlayer = currentPlayer === player1 ? player2 : player1;
-    message.textContent = `${currentPlayer}, you're up`;
-  });
-});
+          currentPlayer = currentPlayer === player1 ? player2 : player1;
+          messageDiv.textContent = ${currentPlayer}, you're up;
+        });
+      });
 
-function checkWinner() {
-  return winningCombinations.some(comb => {
-    const [a,b,c] = comb;
-    return board[a] && board[a] === board[b] && board[a] === board[c];
-  });
-}
-
-function highlightWinningCells() {
-  winningCombinations.forEach(comb => {
-    const [a,b,c] = comb;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      document.getElementById(a+1).classList.add("winner");
-      document.getElementById(b+1).classList.add("winner");
-      document.getElementById(c+1).classList.add("winner");
-    }
-  });
-}
+      function checkWin() {
+        return winningCombinations.some((combo) => {
+          const [a, b, c] = combo;
+          return board[a] && board[a] === board[b] && board[b] === board[c];
+        });
+      }
